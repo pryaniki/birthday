@@ -6,14 +6,13 @@ try:
                                   password='abc123'""")
     print("Database opened successfully")
     cursor = connection.cursor()
-
+######## drop all table
     dropTable   = """DROP TABLE IF EXISTS phoneNumber;"""
     cursor.execute(dropTable)
     dropTable   = """DROP TABLE IF EXISTS email;"""
     cursor.execute(dropTable)
     dropTable   = """DROP TABLE IF EXISTS people;"""
     cursor.execute(dropTable)
-
 
 #######PEAPLE
     people = """
@@ -52,12 +51,21 @@ try:
 
 
 #FILLING TABLES
-
+#filling people
     f = open(r'/home/maks/project/birthday/people.csv', 'r')
     cursor.copy_from(f,"people",sep=',',null='none')
     f.close()
 
-    # The query outputs peopl who have a birthday on the next day
+#filling people
+    f = open(r'/home/maks/project/birthday/phoneNumber.csv', 'r')
+    cursor.copy_from(f,"phoneNumber",sep=',',null='none')
+    f.close()
+#filling email
+    f = open(r'/home/maks/project/birthday/email.csv', 'r')
+    cursor.copy_from(f,"email",sep=',',null='none')
+    f.close()
+
+# The query outputs peopl who have a birthday on the next day
     birthday_in_num_days = sql.SQL("""
     WITH next_birthday AS(
       SELECT id,
