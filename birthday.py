@@ -7,8 +7,6 @@ try:
     print("Database opened successfully")
     cursor = connection.cursor()
 
-
-
     dropTable   = """DROP TABLE IF EXISTS phoneNumber;"""
     cursor.execute(dropTable)
     dropTable   = """DROP TABLE IF EXISTS email;"""
