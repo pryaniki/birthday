@@ -1,9 +1,12 @@
 import psycopg2
 from psycopg2 import sql#import sql
 try:
-    connection = psycopg2.connect("""host='localhost' port='5432'
-                                  dbname='birthday' user='postgres'
-                                  password='abc123'""")
+    connection = psycopg2.connect(
+        """
+        host = 'localhost' port = '5432'
+        dbname ='birthday' user = 'postgres' password = 'abc123'
+        """
+    )
     print("Database opened successfully")
     cursor = connection.cursor()
 ######## drop all table
@@ -14,8 +17,8 @@ try:
     dropTable   = """DROP TABLE IF EXISTS people;"""
     cursor.execute(dropTable)
 
-#######PEAPLE
-    people = """
+# Query to create a table "people"
+    people ="""
     CREATE TABLE IF NOT EXISTS people (
       id serial primary key,
       firstName varchar(30),
@@ -24,12 +27,12 @@ try:
       birthday date,
       sex char(6),
       aboutPerson varchar
-      )
+    )
     """
     cursor.execute(people)
 
-#######PHONENUMBER_ID
-    phoneNumber= """
+# Query to create a table "phoneNumber"
+    phoneNumber ="""
     CREATE TABLE IF NOT EXISTS phoneNumber(
       id serial primary key,
       number varchar(30),
@@ -38,8 +41,8 @@ try:
     """
     cursor.execute(phoneNumber)
 
-#######EMAIL
-    email= """
+# Query to create a table "email"
+    email ="""
     CREATE TABLE IF NOT EXISTS email(
       id serial primary key,
       email varchar(30),
@@ -49,45 +52,42 @@ try:
     cursor.execute(email)
     connection.commit()
 
+    def fill_table(csv_file, table_name):
+        """
+        Fills table table_name with data from file csv_file,
+        where csv_file is the path to the file
+        """
+        f = open(csv_file, 'r')
+        cursor.copy_from(f, table_name, sep=',', null='none')
+        f.close()
 
-#FILLING TABLES
-#filling people
-    f = open(r'/home/maks/project/birthday/people.csv', 'r')
-    cursor.copy_from(f,"people",sep=',',null='none')
-    f.close()
-
-#filling people
-    f = open(r'/home/maks/project/birthday/phoneNumber.csv', 'r')
-    cursor.copy_from(f,"phoneNumber",sep=',',null='none')
-    f.close()
-#filling email
-    f = open(r'/home/maks/project/birthday/email.csv', 'r')
-    cursor.copy_from(f,"email",sep=',',null='none')
-    f.close()
+# Filling tables with data from csv files    
+    fill_table('/home/maks/project/birthday/people.csv', 'people')
+    fill_table('/home/maks/project/birthday/phoneNumber.csv', 'phoneNumber')
+    fill_table('/home/maks/project/birthday/email.csv', 'email')
 
 # The query outputs peopl who have a birthday on the next day
-    birthday_in_num_days = sql.SQL("""
-    WITH next_birthday AS(
-      SELECT id,
-        cast(birthday +((extract(year from age(birthday)) + 1) *
-             interval '1' year) as date)
-      FROM people
+    birthday_in_num_days = sql.SQL(
+    """
+      WITH next_birthday AS(
+        SELECT id,
+          cast(birthday +((extract(year from age(birthday)) + 1) *
+               interval '1' year) as date)
+        FROM people
+      )
+      SELECT * from next_birthday
+      WHERE extract(month from date) = extract(month from now()) and
+            extract(day from date) = extract(day from now())+%s
+    """
     )
-    SELECT * from next_birthday
-    /*WHERE date = now()*/
-    WHERE extract(month from date) = extract(month from now()) and
-          extract(day from date) = extract(day from now())+%s
-    """)
-    num = (2,)
+    num = (2, )
 
-
-    cursor.execute(birthday_in_num_days,num)
+    cursor.execute(birthday_in_num_days, num)
     cursor.execute("select * from people")
     people = cursor.fetchall()
 
     for user in people:
         print(user)
-
 
 except (Exception, psycopg2.Error) as error :
     print ("Error while fetching data from PostgreSQL", error)
@@ -97,9 +97,6 @@ finally:
         cursor.close()
         connection.close()
         print("PostgreSQL connection is closed")
-
-
-
 
     # The query outputs people who have a birthday on the next day
    ## cursor.execute("""
