@@ -1,4 +1,5 @@
 import psycopg2
+import os
 from psycopg2 import sql#import sql
 try:
     connection = psycopg2.connect(
@@ -62,28 +63,33 @@ try:
         f.close()
 
 # Filling tables with data from csv files    
-    fill_table('/home/maks/project/birthday/people.csv', 'people')
-    fill_table('/home/maks/project/birthday/phoneNumber.csv', 'phoneNumber')
-    fill_table('/home/maks/project/birthday/email.csv', 'email')
-
+    fill_table(os.path.abspath('people.csv'), 'people')
+    fill_table(os.path.abspath('phoneNumber.csv'), 'phoneNumber')
+    fill_table(os.path.abspath('email.csv'), 'email')
 # The query outputs peopl who have a birthday on the next day
     birthday_in_num_days = sql.SQL(
     """
-      WITH next_birthday AS(
+      WITH TabNextBirthday AS(
         SELECT id,
-          cast(birthday +((extract(year from age(birthday)) + 1) *
-               interval '1' year) as date)
+        firstName,
+        lastName,
+        middleName,
+        cast(birthday +
+        ((extract(year from age(birthday)) + 1) *interval '1' year
+        ) as date) as next_birthday,
+        date_part('year',age(birthday)) as age
         FROM people
       )
-      SELECT * from next_birthday
-      WHERE extract(month from date) = extract(month from now()) and
-            extract(day from date) = extract(day from now())+%s
+    SELECT t.id, t.next_birthday
+    from TabNextBirthday as t
+    where t.next_birthday <= current_date +%s 
+    order by t.next_birthday;
     """
     )
-    num = (2, )
+    num = (200, )
 
     cursor.execute(birthday_in_num_days, num)
-    cursor.execute("select * from people")
+   # cursor.execute("select * from people")
     people = cursor.fetchall()
 
     for user in people:
@@ -98,16 +104,3 @@ finally:
         connection.close()
         print("PostgreSQL connection is closed")
 
-    # The query outputs people who have a birthday on the next day
-   ## cursor.execute("""
-   ## WITH next_birthday AS(
-   ##   SELECT id,
-   ##     cast(birthday +((extract(year from age(birthday)) + 1) *
-   ##          interval '1' year) as date)
-   ##   FROM people
-   ## )
-   ## SELECT * from next_birthday
-   ## /*WHERE date = now()*/
-   ## WHERE extract(month from date) = extract(month from now()) and
-   ##       extract(day from date) = extract(day from now())
-   ## """)
