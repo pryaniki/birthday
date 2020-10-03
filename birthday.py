@@ -1,6 +1,27 @@
 import psycopg2
 import os
 from psycopg2 import sql#import sql
+
+def is_accessible(path, mode='r'):
+    """
+    Проверка, является ли файл или папка из `path`
+    доступным для работы в предоставленным `mode` формате.
+    """
+    try:
+        f = open(path, mode)
+        f.close()
+    except IOError:
+        return False
+    return True
+
+def get_setiings (fileName):
+    if (is_accessible(fileName)):
+        f = open(fileName, 'r')
+ #       for line in f:
+ #          print(line)
+        f.close() 
+
+get_setiings (os.path.abspath('settings'))
 try:
     connection = psycopg2.connect(
         """
@@ -77,24 +98,32 @@ try:
         cast(birthday +
         ((extract(year from age(birthday)) + 1) *interval '1' year
         ) as date) as next_birthday,
-        date_part('year',age(birthday)) as age
+        date_part('year',age(birthday)) as age,
+        aboutPerson
         FROM people
       )
-    SELECT t.id, t.next_birthday
+    SELECT t.firstName, t.lastName, t.age, t.next_birthday, 
+      abs( date_part('day', age(t.next_birthday)) ) as daysBeforeBirthday,
+      t.aboutPerson
+
     from TabNextBirthday as t
     where t.next_birthday <= current_date +%s 
     order by t.next_birthday;
     """
     )
-    num = (200, )
+    num = (300, )
 
     cursor.execute(birthday_in_num_days, num)
    # cursor.execute("select * from people")
-    people = cursor.fetchall()
+    while True:
+      people = cursor.fetchone()
+      if people == None:
+            break
 
-    for user in people:
-        print(user)
-
+      print (people[0],people[1], "current age: ", round(people[2]), "days Before Birthday:",
+              round(people[4]), people[5])
+ #   for user in people:
+        #print(user)
 except (Exception, psycopg2.Error) as error :
     print ("Error while fetching data from PostgreSQL", error)
 finally:
