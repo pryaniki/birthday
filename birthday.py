@@ -1,5 +1,6 @@
 import psycopg2
 import os
+from datetime import datetime, date, timedelta #working with a date
 from psycopg2 import sql#import sql
 
 def is_accessible(path, mode='r'):
@@ -84,9 +85,10 @@ try:
         f.close()
 
 # Filling tables with data from csv files    
-    fill_table(os.path.abspath('people.csv'), 'people')
+    fill_table(os.path.abspath('myPeople.csv'), 'people')
     fill_table(os.path.abspath('phoneNumber.csv'), 'phoneNumber')
     fill_table(os.path.abspath('email.csv'), 'email')
+
 # The query outputs peopl who have a birthday on the next day
     birthday_in_num_days = sql.SQL(
     """
@@ -111,9 +113,55 @@ try:
     order by t.next_birthday;
     """
     )
-    num = (300, )
 
-    cursor.execute(birthday_in_num_days, num)
+    def get_date_difference(any_date):
+        '''
+        returns the difference between
+        a date and the current day
+        '''
+        return any_date - date.today() 
+    
+    def last_day_of_week():
+        '''
+        Returns the last day of the week
+        '''
+        cur_day_week = date.today().weekday() # Monday is 0 and Sunday is 6
+        return date.today() + timedelta(days= 6 - cur_day_week)
+    
+    def last_day_of_month():
+        '''
+        Returns the last day of the month
+        '''
+        next_month = date.today().replace(day=28) + timedelta(days=4)
+        return next_month - timedelta(days=next_month.day)
+    
+    def last_day_of_year():
+        '''
+        Returns the last day of the year
+        '''
+        new_year = date(date.today().year + 1, 1, 1)
+        return new_year 
+    
+    def get_interval(interval):
+        '''
+        Returns the number of days until the end of the interval
+        interval = ["day", "week", "mounth", "year"]
+        where 0 - "day", 3 - "year"
+        '''
+        if (interval == 0):
+            return 1
+        elif (interval == 1):
+            my_date = last_day_of_week()
+            return get_date_difference(my_date).days
+        elif (interval == 2):
+            my_date = last_day_of_month()
+            return get_date_difference(my_date).days
+        elif (interval == 3):
+            my_date = last_day_of_year()
+        
+    interval = 2 #default
+
+    cursor.execute(birthday_in_num_days,(get_interval(interval), ) )
    # cursor.execute("select * from people")
     while True:
       people = cursor.fetchone()
