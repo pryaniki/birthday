@@ -163,15 +163,38 @@ try:
 
     cursor.execute(birthday_in_num_days,(get_interval(interval), ) )
    # cursor.execute("select * from people")
-    while True:
-      people = cursor.fetchone()
-      if people == None:
-            break
+    def print_birthday_man(people):
+        '''
+        displays information about a person in a specific format
+        '''
+        print()
+        if (people[0] is not None and people[1] is not None):
+                print(people[0],people[1])
+        elif (people[0] is not None):
+            print(people[0])
+        elif (people[1] is not None):
+            print(people[1])
 
-      print (people[0],people[1], "current age: ", round(people[2]), "days Before Birthday:",
-              round(people[4]), people[5])
- #   for user in people:
-        #print(user)
+        print("Current age: ", round(people[2]))
+        if (people[4] == 0):
+            print("Birthday today")
+        elif (people[4] == 1):
+            print("Birthday tomorrow")
+        elif (people[4] > 1):
+            print("Birthday before ",round(people[4])," days ")
+
+        if (people[5] is not None):
+            print(people[5])
+    
+    def print_table_to_file():
+       pass
+
+    while True:
+        people = cursor.fetchone()
+        if people == None:
+              break
+        print_birthday_man(people)
+  
 except (Exception, psycopg2.Error) as error :
     print ("Error while fetching data from PostgreSQL", error)
 finally:
@@ -180,4 +203,5 @@ finally:
         cursor.close()
         connection.close()
         print("PostgreSQL connection is closed")
+
 
