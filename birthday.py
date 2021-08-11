@@ -28,7 +28,7 @@ def get_setiings(fileName):
 
 def test():
     str = print('e')
-    print(str)
+    #print(str)
 
 
 def processing_human_data(data: list) -> str:
