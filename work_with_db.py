@@ -84,6 +84,7 @@ def print_birthday_to_console(cursor):
 
 def connect_to_db(command, data_for_request):
     def get_birthday_people_from_table_people(cursor, interval):
+        interval = interval[0]
         # The query all_dataoutputs people who have a birthday on the next day
         birthday_in_num_days = sql.SQL(
             """
@@ -155,21 +156,23 @@ def connect_to_db(command, data_for_request):
             interval = ["day", "week", "month", "year"]
             where 0 - "day", 3 - "year"
             """
+
             if interval == 0:
                 return 1
-            elif interval == 1:
-                my_date = last_day_of_week(date.today())
+            elif interval in (1, 2, 3):
+                get_last_day = {
+                    1: last_day_of_week,
+                    2: last_day_of_month,
+                    3: last_day_of_year,
+                }
+                my_date = get_last_day[interval](date.today())
                 return get_date_difference(my_date).days
-            elif interval == 2:
-                my_date = last_day_of_month(date.today())
-                return get_date_difference(my_date).days
-            elif interval == 3:
-                my_date = last_day_of_year(date.today())
-                return get_date_difference(my_date).days
+            else:
+                print('не правильное значение интервала')
 
         cursor.execute(birthday_in_num_days, (get_interval(interval),))
 
-    def get_all_data_from_table_people(cursor):
+    def get_all_data_from_table_people(cursor, data):
         birthday_in_num_days = sql.SQL(
             """
                 SELECT * from people ORDER BY id
@@ -191,6 +194,7 @@ def connect_to_db(command, data_for_request):
         return 0
 
     def import_data_from_file(cursor, f_name):
+        f_name = f_name[0]
         create_tables(cursor)
 
         def fill_table_people(csv_file):
@@ -212,7 +216,7 @@ def connect_to_db(command, data_for_request):
         fill_table_people(os.path.abspath(f_name))
 
     def get_person(cursor, person_id):
-
+        person_id = person_id[0]
         request = sql.SQL(
             """
                SELECT * 
@@ -245,29 +249,28 @@ def connect_to_db(command, data_for_request):
                             person_data[5], person_id)
         cursor.execute(request, record_to_insert)
 
-    def execute_command(cursor, com: str, data: list):
-        if com == 'get_birthdays_from_people':
-            get_birthday_people_from_table_people(cursor, data[0])
-        elif com == 'get_people':
-            get_all_data_from_table_people(cursor)
-        elif com == 'insert_to_people':
-            insert_to_table_people(cursor, data)
-        elif com == 'import_data':
-            import_data_from_file(cursor, data[0])
-        elif com == 'get_person_by_id':
-            get_person(cursor, data[0])
-        elif com == 'update_people':
-            update_person(cursor, data)
-        else:
-            print(f'команды {com} нет')
-        if com in ('get_birthdays_from_people', 'get_people', 'get_person_by_id'):
-            table = []
-            while True:
-                people = cursor.fetchone()
-                if people is None:
-                    break
-                table.append(people)
-            return table
+    def execute_command(cursor, request: str, data: list):
+        commands = {
+            'get_birthdays_from_people': get_birthday_people_from_table_people,
+            'get_people': get_all_data_from_table_people,
+            'insert_to_people': insert_to_table_people,
+            'import_data': import_data_from_file,
+            'get_person_by_id': get_person,
+            'update_people': update_person,
+        }
+        try:
+            commands[request](cursor, data)
+        except KeyError:
+            print(f'команды {request} нет')
+        finally:
+            if request in ('get_birthdays_from_people', 'get_people', 'get_person_by_id'):
+                table = []
+                while True:
+                    people = cursor.fetchone()
+                    if people is None:
+                        break
+                    table.append(people)
+                return table
 
     def connect(com: str, data_for_request: list):
         try:
