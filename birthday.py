@@ -62,6 +62,21 @@ def processing_human_data(data: list) -> str:
     return result
 
 
+def set_window_location(window, width_win, height_win, width_offset=0, height_offset=0):
+    """
+    Функция располагает окно на экране
+    Если оставить width_offset=0, height_offset=0, то окно
+    будет выровнено по центру
+    """
+    if width_offset == height_offset == 0:
+        center_screen_x = window.winfo_screenwidth() // 2  # середина экрана
+        center_screen_y = window.winfo_screenheight() // 2
+        width_offset = center_screen_x - int(width_win / 2)  # смещение по ширине
+        height_offset = center_screen_y - int(height_win / 2)  # смещение по высоте
+
+    window.geometry(f'{width_win}x{height_win}+{width_offset}+{height_offset}')
+
+
 def create_interface():
     def butt_get_information():
         birthday_today = []
@@ -77,19 +92,10 @@ def create_interface():
         background = '#d1d1d1'
         size_fount = 12
         win = tk.Toplevel(window)
-        w = win.winfo_screenwidth()
-        h = win.winfo_screenheight()
-        w = w // 2  # середина экрана
-        h = h // 2
-        w = w - 200  # смещение от середины
-        h = h - 200
-
         win.config(bg=background)
         win.resizable(False, False)
-        width_win = 500
-        height_win = 500
+        set_window_location(win, width_win=500, height_win=500)
 
-        win.geometry(f'{width_win}x{height_win}+800+50')
         tk.Label(win, bg=background, text='Сегодня День Рождения у следующих людей:', font=('', size_fount)) \
             .pack()  # Сегодня день рождения у следующих людей:
         frame1 = tk.Frame(win)
@@ -156,20 +162,15 @@ def create_interface():
         background = '#d1d1d1'
         size_fount = 12
         win = tk.Toplevel(window)
-        w = win.winfo_screenwidth()
-        h = win.winfo_screenheight()
-        w = w // 2  # середина экрана
-        h = h // 2
-        w = w - 200  # смещение от середины
-        h = h - 200
-        width_win = 500
-        height_win = 500
         win.config(bg='red')
         win.title('Birthday')
-        win.geometry(f'{width_win}x{height_win}+{w}+{h}')
         win.resizable(False, False)
+        width_win = 500
+        height_win = 500
+        set_window_location(win, width_win=width_win, height_win=height_win)
 
         frame_warp = tk.Frame(win, width=width_win, height=height_win, bg=background)
+        frame_warp.pack()
         f_name = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
         f_surname = tk.Frame(frame_warp, width=width_win, height=15, bg='white')
         f_patronymic = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
@@ -186,7 +187,7 @@ def create_interface():
         l_gender = tk.Label(f_gender, bg=background, text='Gender* ', font=('', size_fount))  # Пол
         l_about_person = tk.Label(f_about_person, height=5, bg=background, text='About a person ',
                                   font=('', size_fount))  #
-        # О человеке
+        # Информация о человеке
 
         ent_name = tk.Entry(f_name, font=('', size_fount))
         ent_surname = tk.Entry(f_surname, font=('', size_fount))
@@ -197,12 +198,9 @@ def create_interface():
         ent_gender = ttk.Combobox(f_gender, state="readonly", values=gender_value, font=('', size_fount))
         ent_about_person = tk.Entry(f_about_person, font=('', size_fount))
 
-        button_add = tk.Button(f_butt_add, text='Add a birthday boy', font=('', size_fount),
-                               command=add_people)  # Добавить именинника
-        button_clear = tk.Button(f_butt_add, text='Clear information', font=('', size_fount),
-                                 command=clear_frame)
+        tk.Button(f_butt_add, text='Add a birthday boy', font=('', size_fount), command=add_people).pack()  # Добавить именинника
+        tk.Button(f_butt_add, text='Clear information', font=('', size_fount), command=clear_frame).pack()
 
-        frame_warp.pack()
         f_name.pack(fill=tk.X, padx=10, pady=10)
         f_surname.pack(fill=tk.X, padx=10, pady=10)
         f_patronymic.pack(fill=tk.X, padx=10, pady=10)
@@ -225,9 +223,6 @@ def create_interface():
         ent_date.pack(side='left')
         ent_gender.pack(side='left')
         ent_about_person.pack(fill=tk.X)
-
-        button_add.pack()
-        button_clear.pack()
 
     def butt_all_bd_people():
 
@@ -279,20 +274,10 @@ def create_interface():
             background = '#d1d1d1'
             size_fount = 12
             win = tk.Toplevel(window)
-            w = win.winfo_screenwidth()
-            h = win.winfo_screenheight()
-            w = w // 2  # середина экрана
-            h = h // 2
-            w = w - 200  # смещение от середины
-            h = h - 200
-            width_win = 500
-            height_win = 500
-
             win.config(bg='red')
             win.title('Birthday')
-            win.geometry(f'{width_win}x{height_win}+{w}+{h}')
             win.resizable(False, False)
-
+            set_window_location(win, width_win=500, height_win=500)
 
             frame_warp = tk.Frame(win, width=width_win, height=height_win, bg=background)
             f_name = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
@@ -363,18 +348,16 @@ def create_interface():
         background = '#d1d1d1'
         size_fount = 12
         win = tk.Toplevel(window)
-        w = win.winfo_screenwidth()
-        h = win.winfo_screenheight()
-        w = w // 2  # середина экрана
-        h = h // 2
-        w = w - 200  # смещение от середины
-        h = h - 200
+        win.config(bg=background)
+        win.resizable(False, False)
+
+        center_screen_x = win.winfo_screenwidth() // 2  # середина экрана
+        center_screen_y = win.winfo_screenheight() // 2
         width_win = 1400
         height_win = 500
-
-        win.config(bg=background)
-        win.geometry(f'{width_win}x{height_win}')
-        win.resizable(False, False)
+        width_offset = center_screen_x - int(width_win / 2)  # смещение по ширине
+        height_offset = center_screen_y - int(height_win / 2)  # смещение по высоте
+        win.geometry(f'{width_win}x{height_win}+{width_offset}+{height_offset}')
 
         frame_main = tk.Frame(win, width=width_win, height=15, bg='white')
         frame_main.pack(fill='both', expand=True)
@@ -397,14 +380,11 @@ def create_interface():
 
         table.pack(expand=tk.YES, fill=tk.BOTH)
 
-        l_name = tk.Label(frame_main, bg=background, text='Id* ', font=('', size_fount))  # Имя
+        tk.Label(frame_main, bg=background, text='Id* ', font=('', size_fount)).pack()  # Имя
         ent_id = tk.Entry(frame_main, font=('', size_fount))  # является ли числом
-
-        button_add = tk.Button(frame_main, text='Change birthday boy', font=('', size_fount),
-                               command=butt_change_birthday_boy)  # Добавить именинника
-        button_add.pack()
-        l_name.pack()
         ent_id.pack()
+        tk.Button(frame_main, text='Change birthday boy', font=('', size_fount),
+                               command=butt_change_birthday_boy).pack()  # Добавить именинника
 
     def butt_import_date_from_file():
         """
@@ -426,50 +406,29 @@ def create_interface():
 
     background = '#599ede'
     window = tk.Tk()
-    w = window.winfo_screenwidth()
-    h = window.winfo_screenheight()
-    w = w // 2  # середина экрана
-    h = h // 2
-    w = w - 200  # смещение от середины
-    h = h - 200
     home = os.getcwd()
     icon_path = home + f'{os.sep}image{os.sep}cake.ico'
-    icon = tk.PhotoImage(file=icon_path)
-    window.iconphoto(True, icon)
+    window.iconphoto(True, tk.PhotoImage(file=icon_path))
     window.config(bg=background)
     window.title('Birthday')
-    window.geometry(f'400x400+{w}+{h}')
     window.resizable(False, False)
+    set_window_location(window, width_win=400, height_win=400)
 
-    l = tk.Label(window, bg=background, width=20, text='Select an interval.',
-                 font=('', 12))
-    l.pack(pady=10)
+    tk.Label(window, bg=background, width=20, text='Select an interval.', font=('', 12)).pack(pady=10)
 
     var = tk.IntVar()
     var.set(0)
 
-    day = tk.Radiobutton(window, text='Tomorrow', bg=background, variable=var, value=0)
-    week = tk.Radiobutton(window, text='For this week', bg=background, variable=var, value=1)
-    month = tk.Radiobutton(window, text='This month', bg=background, variable=var, value=2)
-    year = tk.Radiobutton(window, text='This year', bg=background, variable=var, value=3)
+    tk.Radiobutton(window, text='Tomorrow', bg=background, variable=var, value=0).pack()
+    tk.Radiobutton(window, text='For this week', bg=background, variable=var, value=1).pack()
+    tk.Radiobutton(window, text='This month', bg=background, variable=var, value=2).pack()
+    tk.Radiobutton(window, text='This year', bg=background, variable=var, value=3).pack()
 
-    day.pack()
-    week.pack()
-    month.pack()
-    year.pack()
-
-    button1 = tk.Button(window, text='Find out the birthday people', command=butt_get_information)  # Узнать именинников
-    button1.pack()
-    button2 = tk.Button(window, text='Add a birthday boy', command=butt_add_birthday_boy)  # Добавить именинника
-    button2.pack()
-    button_all_bd_people = tk.Button(window, text='See all birthday people', command=butt_all_bd_people)  #
-    # Просмотр всех именинников
-    button_all_bd_people.pack()
-    but_export_date = tk.Button(window, text='Exporting data to file people1.csv', command=butt_export_data_to_file)
-    but_import_date = tk.Button(window, text='Import data from file people.csv', command=butt_import_date_from_file)
-
-    but_export_date.pack()
-    but_import_date.pack()
+    tk.Button(window, text='Find out the birthday people', command=butt_get_information).pack()  # Узнать именинников
+    tk.Button(window, text='Add a birthday boy', command=butt_add_birthday_boy).pack()  # Добавить именинника
+    tk.Button(window, text='See all birthday people', command=butt_all_bd_people).pack()  # Просмотр всех именинников
+    tk.Button(window, text='Exporting data to file people1.csv', command=butt_export_data_to_file).pack()
+    tk.Button(window, text='Import data from file people.csv', command=butt_import_date_from_file).pack()
 
     window.mainloop()
 
@@ -481,9 +440,6 @@ def test():
 def main():
     # get_setiings(os.path.abspath('settings'))
     # start_with_system('E:\\Programs\\My_programs\\birthday\\dist\\start_with_system\\start_with_system.exe')
-
-    home = os.getcwd()
-    icon_path = home + f'{os.sep}image{os.sep}cake.ico'
     create_interface()
 
 
