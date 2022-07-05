@@ -56,10 +56,9 @@ def get_setiings(f_name):
 
 def processing_human_data(data: list) -> str:
     result = f'{data[0]} {data[1]} ({data[5]}) '
-    if data[4] != 0:
-        result = result + f'через {data[4]} д. '
-    result = result + f'исполнится {int(data[2])}\n'
-    return result
+    if data[4] == 0:
+        return result + f'исполнилось {int(data[2])}\n'
+    return result + f'через {data[4]} д. исполнится {int(data[2])}\n'
 
 
 def set_window_location(window, width_win, height_win, width_offset=0, height_offset=0):
@@ -162,7 +161,7 @@ def create_interface():
         background = '#d1d1d1'
         size_fount = 12
         win = tk.Toplevel(window)
-        win.config(bg='red')
+        win.config(bg='#d1d1d1')
         win.title('Birthday')
         win.resizable(False, False)
         width_win = 500
@@ -171,14 +170,14 @@ def create_interface():
 
         frame_warp = tk.Frame(win, width=width_win, height=height_win, bg=background)
         frame_warp.pack()
-        f_name = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
+        f_name = tk.Frame(frame_warp, width=width_win, height=15, bg='#d1d1d1')
         f_surname = tk.Frame(frame_warp, width=width_win, height=15, bg='white')
-        f_patronymic = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
+        f_patronymic = tk.Frame(frame_warp, width=width_win, height=15, bg='#d1d1d1')
         f_date_gender = tk.Frame(frame_warp, width=width_win, height=15, bg='white')
-        f_date = tk.Frame(f_date_gender, width=width_win * (2 / 3), height=15, bg='yellow')
+        f_date = tk.Frame(f_date_gender, width=width_win * (2 / 3), height=15, bg='#d1d1d1')
         f_gender = tk.Frame(f_date_gender, width=width_win * (1 / 3), height=15, bg='red')
         f_about_person = tk.Frame(frame_warp, width=width_win, height=100, bg='white')
-        f_butt_add = tk.Frame(frame_warp, width=width_win, height=40, bg='black')
+        f_butt_add = tk.Frame(frame_warp, width=width_win, height=40, bg='#d1d1d1')
 
         l_name = tk.Label(f_name, bg=background, text='Name* ', font=('', size_fount))  # Имя
         l_surname = tk.Label(f_surname, bg=background, text='Surname* ', font=('', size_fount))  # Фамилия
@@ -407,7 +406,7 @@ def create_interface():
     background = '#599ede'
     window = tk.Tk()
     home = os.getcwd()
-    icon_path = home + f'{os.sep}image{os.sep}cake.ico'
+    icon_path = home + f'{os.sep}data{os.sep}icons{os.sep}cake.ico'
     window.iconphoto(True, tk.PhotoImage(file=icon_path))
     window.config(bg=background)
     window.title('Birthday')
@@ -425,7 +424,7 @@ def create_interface():
     tk.Radiobutton(window, text='This year', bg=background, variable=var, value=3).pack()
 
     tk.Button(window, text='Find out the birthday people', command=butt_get_information).pack()  # Узнать именинников
-    tk.Button(window, text='Add a birthday boy', command=butt_add_birthday_boy).pack()  # Добавить именинника
+    tk.Button(window, text='Add a birthday person', command=butt_add_birthday_boy).pack()  # Добавить именинника
     tk.Button(window, text='See all birthday people', command=butt_all_bd_people).pack()  # Просмотр всех именинников
     tk.Button(window, text='Exporting data to file people1.csv', command=butt_export_data_to_file).pack()
     tk.Button(window, text='Import data from file people.csv', command=butt_import_date_from_file).pack()
@@ -434,12 +433,42 @@ def create_interface():
 
 
 def test():
-    pass
+    import sys
+    import random
+    from PySide6 import QtCore, QtWidgets, QtGui
+    class MyWidget(QtWidgets.QWidget):
+        def __init__(self):
+            super().__init__()
 
+            self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
+
+            self.button = QtWidgets.QPushButton("Click me!")
+            self.text = QtWidgets.QLabel("Hello World",
+                                         alignment=QtCore.Qt.AlignCenter)
+
+            self.layout = QtWidgets.QVBoxLayout(self)
+            self.layout.addWidget(self.text)
+            self.layout.addWidget(self.button)
+
+            self.button.clicked.connect(self.magic)
+
+        @QtCore.Slot()
+        def magic(self):
+            self.text.setText(random.choice(self.hello))
+
+
+    app = QtWidgets.QApplication([])
+
+    widget = MyWidget()
+    widget.resize(800, 600)
+    widget.show()
+
+    sys.exit(app.exec())
 
 def main():
     # get_setiings(os.path.abspath('settings'))
     # start_with_system('E:\\Programs\\My_programs\\birthday\\dist\\start_with_system\\start_with_system.exe')
+    #test()
     create_interface()
 
 
