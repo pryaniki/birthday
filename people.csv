@@ -1,20 +1,30 @@
-Krjukov,Leonid,Il'jaovich,2019-08-16,male,none
-Blohin,Kassian,Dmitrievich,1954-09-10,male,none
-Kononov,Aver'jan,Stanislavovich,1952-08-09,male,none
-Evseev,Zinovij,Vasil'evich,1948-07-22,male,none
-Frolov,Valerij,Petrovich,1947-08-13,male,none
-Osipov,Avgust,Ignat'evich,1933-11-06,male,none
-Antonov,Sevast'jan,Gelas'evich,1933-05-29,male,none
-Popov,Gordej,Gennad'evich,1928-08-29,male,none
-Komarov,Nison,Artjomovich,1920-08-12,male,none
-Vishnjakov,Valentin,Hristoforovich,1917-09-28,male,none
-Sysoeva,Lana,Frolovna,1981-09-17,female,none
-Aksjonova,Monika,Aleksandrovna,1981-11-27,female,none
-Pestova,Ul'na,Boguslavovna,1983-08-11,female,none
-Mihajlova,Pelageja,Valer'evna,1984-12-04,female,none
-Belova,Sara,Konstantinovna,1995-11-24,female,none
-Abramova,Valerija,Matveevna,2007-08-15,female,none
-Vladimirova,Berta,Ivanovna,2010-08-16,female,none
-Solov'jova,Versavija,Adol'fovna,2016-08-30,female,none
-Sazonova,Sabrina,Gelas'evna,2020-12-31,female,none
-Ignat'eva,Gelena,Mironovna,1970-12-08,female,none
+Krjukov,Leonid,Il'jaovich,2019-08-16,male  ,
+Blohin,Kassian,Dmitrievich,1954-09-10,male  ,
+Kononov,Aver'jan,Stanislavovich,1952-08-09,male  ,
+Evseev,Zinovij,Vasil'evich,1948-07-22,male  ,
+Frolov,Valerij,Petrovich,1947-08-13,male  ,
+Osipov,Avgust,Ignat'evich,1933-11-06,male  ,
+Antonov,Sevast'jan,Gelas'evich,1933-05-29,male  ,
+Popov,Gordej,Gennad'evich,1928-08-29,male  ,
+Komarov,Nison,Artjomovich,1920-08-12,male  ,
+Vishnjakov,Valentin,Hristoforovich,1917-09-28,male  ,
+Sysoeva,Lana,Frolovna,1981-09-17,female,Teacher
+Aksjonova,Monika,Aleksandrovna,1981-11-27,female,
+Pestova,Ul'na,Boguslavovna,1983-08-11,female,
+Mihajlova,Pelageja,Valer'evna,1984-12-04,female,
+Belova,Sara,Konstantinovna,1995-11-24,female,
+Abramova,Valerija,Matveevna,2007-08-15,female,
+Vladimirova,Berta,Ivanovna,2010-08-16,female,
+Solov'jova,Versavija,Adol'fovna,2016-08-30,female,
+Sazonova,Sabrina,Gelas'evna,2020-12-31,female,Sister
+Ignat'eva,Gelena,Mironovna,1970-12-08,female,
+Clifford, McCarthy,,1970-01-12,male  ,Brother
+David, Estrada,,1990-02-02,male  ,
+William,Curry,,2008-03-18,male  ,
+Raymond,Manning,,2020-04-07,male  ,
+Michael,Nelson,,2003-05-02,male  ,
+Stanley,Murray,,1995-06-22,male  ,
+Bradley,Mendoza,,2016-07-16,male  ,
+Juan,Patrick,,1990-08-21,male  ,
+William,Henderson,,2016-09-05,male  ,
+Peter,Gonzalez,,1987-10-03,male  ,
