@@ -1,7 +1,11 @@
 import psycopg2
+import subprocess
 import os
+import sys
 from datetime import date, timedelta, datetime  # working with a date
-from psycopg2 import sql  # import sql
+from psycopg2 import sql, Error
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+
 
 
 def create_tables(cursor):
@@ -272,9 +276,30 @@ def connect_to_db(command, data_for_request):
                     table.append(people)
                 return table
 
+    def create_database():
+        try:
+            # Подключение к существующей базе данных
+            connection = psycopg2.connect(user="postgres",
+                                          # пароль, который указали при установке PostgreSQL
+                                          password="admin",
+                                          host="127.0.0.1",
+                                          port="5432")
+            connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+            # Курсор для выполнения операций с базой данных
+            cursor = connection.cursor()
+            sql_create_database = 'create database birthday'
+            cursor.execute(sql_create_database)
+        except (Exception, Error) as error:
+            print("Ошибка при работе с PostgreSQL", error)
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()
+                print("Соединение с PostgreSQL закрыто")
+
     def connect(com: str, data_for_request: list):
         try:
-            connection = psycopg2.connect(user="postgres", password="admin", database='birthday', host="localhost",
+            connection = psycopg2.connect(user="postgres", password="admin", database='birthday2', host="localhost",
                                           port="5432")
             connection.autocommit = True
             with connection:
@@ -283,7 +308,41 @@ def connect_to_db(command, data_for_request):
                     return table
         except (Exception, psycopg2.Error) as error:
             print("Error while fetching data from PostgreSQL", error)
+            try:
+                # Подключение к существующей базе данных
+                connection = psycopg2.connect(user="postgres",
+                                              # пароль, который указали при установке PostgreSQL
+                                              password="admin",
+                                              host="127.0.0.1",
+                                              port="5432")
+                connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+                # Курсор для выполнения операций с базой данных
+                cursor = connection.cursor()
+                sql_create_database = 'create database birthday2'
+                cursor.execute(sql_create_database)
+            except (Exception, Error) as error:
+                print("Ошибка при работе с PostgreSQL", error)
         finally:
-            connection.close()
+            if connection:
+                cursor.close()
+                connection.close()
+                print("Соединение с PostgreSQL закрыто")
 
+    PGRE_EXE = f'PostgreSQLPortable{os.path.sep}PostgreSQLPortable.exe'
+
+    def resource_path(relative_path):
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS, relative_path)
+        return os.path.join(os.path.abspath("."), relative_path)
+
+    def start_pgre():
+        pgre_path = os.path.join(resource_path("."), PGRE_EXE)
+        print(pgre_path)
+        p = subprocess.Popen(
+            [pgre_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = p.communicate()
+        print(stdout)
+        print(stderr)
+
+    start_pgre()
     return connect(command, data_for_request)

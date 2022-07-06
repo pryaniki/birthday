@@ -432,43 +432,14 @@ def create_interface():
     window.mainloop()
 
 
-def test():
-    import sys
-    import random
-    from PySide6 import QtCore, QtWidgets, QtGui
-    class MyWidget(QtWidgets.QWidget):
-        def __init__(self):
-            super().__init__()
-
-            self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
-
-            self.button = QtWidgets.QPushButton("Click me!")
-            self.text = QtWidgets.QLabel("Hello World",
-                                         alignment=QtCore.Qt.AlignCenter)
-
-            self.layout = QtWidgets.QVBoxLayout(self)
-            self.layout.addWidget(self.text)
-            self.layout.addWidget(self.button)
-
-            self.button.clicked.connect(self.magic)
-
-        @QtCore.Slot()
-        def magic(self):
-            self.text.setText(random.choice(self.hello))
-
-
-    app = QtWidgets.QApplication([])
-
-    widget = MyWidget()
-    widget.resize(800, 600)
-    widget.show()
-
-    sys.exit(app.exec())
-
 def main():
-    # get_setiings(os.path.abspath('settings'))
-    # start_with_system('E:\\Programs\\My_programs\\birthday\\dist\\start_with_system\\start_with_system.exe')
-    #test()
+    #get_setiings(os.path.abspath('settings'))
+    #path = os.getcwd() + f'{os.sep}dist{os.sep}start_with_system{os.sep}start_with_system.exe'
+    #print(path.split(str(os.sep)).join('\\'))
+    #print(os.getcwd() + f'{os.sep*2}dist{os.sep*2}start_with_system{os.sep*2}start_with_system.exe')
+    #start_with_system('E:\\Programs\\My_programs\\birthday\\dist\\start_with_system\\start_with_system.exe')
+    #start_with_system(os.getcwd() + f'{os.sep}dist{os.sep}start_with_system{os.sep}start_with_system.exe')
+
     create_interface()
 
 
