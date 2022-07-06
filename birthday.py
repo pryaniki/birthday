@@ -80,13 +80,19 @@ def create_interface():
     def butt_get_information():
         birthday_today = []
         birthdays = []
+        data = None
         if var.get() in (0, 1, 2, 3):
             data = connect_to_db('get_birthdays_from_people', [var.get()])
-        for people in data:
-            if people[4] == 0:
-                birthday_today.append(processing_human_data(people))
-            else:
-                birthdays.append(processing_human_data(people))
+        else:
+            print('Ошибка в функции butt_get_information')
+        if data:
+            for people in data:
+                if people[4] == 0:
+                    birthday_today.append(processing_human_data(people))
+                else:
+                    birthdays.append(processing_human_data(people))
+        else:
+            print('У вас нет именинников, вы можете их добавить')
 
         background = '#d1d1d1'
         size_fount = 12
