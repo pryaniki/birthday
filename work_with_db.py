@@ -297,6 +297,7 @@ def connect_to_db(command, data_for_request):
             if not is_exist_db:
                 sql_create_database = f'create database {db_name}'
                 cursor.execute(sql_create_database)
+
         except (Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
         finally:
@@ -311,6 +312,8 @@ def connect_to_db(command, data_for_request):
             connection.autocommit = True
             with connection:
                 with connection.cursor() as cursor:
+                    if not is_exist_db:
+                        create_tables(cursor)
                     table = execute_command(cursor, com, data_for_request)
                     return table
         except (Exception, psycopg2.Error) as error:
