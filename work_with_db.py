@@ -276,8 +276,37 @@ def connect_to_db(command, data_for_request):
                 return table
 
     def connect(com: str, data_for_request: list):
+        db_name = 'birthday2'
+        is_exist_db = False
+        try:  # создать БД
+            connection = psycopg2.connect(user="postgres",
+                                          password="admin",
+                                          host="127.0.0.1",
+                                          port="5432")
+            connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+
+            cursor = connection.cursor()
+            sql_create_database = 'select * from pg_database'
+            cursor.execute(sql_create_database)
+            while True:
+                db = cursor.fetchone()
+                if db is None:
+                    break
+                if db[1] == db_name:
+                    is_exist_db = True
+            if not is_exist_db:
+                sql_create_database = f'create database {db_name}'
+                cursor.execute(sql_create_database)
+        except (Exception, Error) as error:
+            print("Ошибка при работе с PostgreSQL", error)
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()
+                print("Соединение с PostgreSQL закрыто")
+
         try:
-            connection = psycopg2.connect(user="postgres", password="admin", database='birthday2', host="localhost",
+            connection = psycopg2.connect(user="postgres", password="admin", database=db_name, host="localhost",
                                           port="5432")
             connection.autocommit = True
             with connection:
@@ -286,19 +315,7 @@ def connect_to_db(command, data_for_request):
                     return table
         except (Exception, psycopg2.Error) as error:
             print("Error while fetching data from PostgreSQL", error)
-            try: # создать БД
-                # Подключение к существующей базе данных
-                connection = psycopg2.connect(user="postgres",
-                                              password="admin",
-                                              host="127.0.0.1",
-                                              port="5432")
-                connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-                # Курсор для выполнения операций с базой данных
-                cursor = connection.cursor()
-                sql_create_database = 'create database birthday2'
-                cursor.execute(sql_create_database)
-            except (Exception, Error) as error:
-                print("Ошибка при работе с PostgreSQL", error)
+
         finally:
             if connection:
                 cursor.close()
