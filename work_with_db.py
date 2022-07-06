@@ -7,7 +7,6 @@ from psycopg2 import sql, Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 
-
 def create_tables(cursor):
     ######## drop all table
 
@@ -276,27 +275,6 @@ def connect_to_db(command, data_for_request):
                     table.append(people)
                 return table
 
-    def create_database():
-        try:
-            # Подключение к существующей базе данных
-            connection = psycopg2.connect(user="postgres",
-                                          # пароль, который указали при установке PostgreSQL
-                                          password="admin",
-                                          host="127.0.0.1",
-                                          port="5432")
-            connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-            # Курсор для выполнения операций с базой данных
-            cursor = connection.cursor()
-            sql_create_database = 'create database birthday'
-            cursor.execute(sql_create_database)
-        except (Exception, Error) as error:
-            print("Ошибка при работе с PostgreSQL", error)
-        finally:
-            if connection:
-                cursor.close()
-                connection.close()
-                print("Соединение с PostgreSQL закрыто")
-
     def connect(com: str, data_for_request: list):
         try:
             connection = psycopg2.connect(user="postgres", password="admin", database='birthday2', host="localhost",
@@ -308,10 +286,9 @@ def connect_to_db(command, data_for_request):
                     return table
         except (Exception, psycopg2.Error) as error:
             print("Error while fetching data from PostgreSQL", error)
-            try:
+            try: # создать БД
                 # Подключение к существующей базе данных
                 connection = psycopg2.connect(user="postgres",
-                                              # пароль, который указали при установке PostgreSQL
                                               password="admin",
                                               host="127.0.0.1",
                                               port="5432")

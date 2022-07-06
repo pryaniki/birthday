@@ -398,7 +398,11 @@ def create_interface():
         """
         Загрузить данные из файла
         """
-        connect_to_db('import_data', ['people.csv'])
+        path = os.path.join(os.getcwd(), 'people.csv')
+        if os.path.exists(path):
+            connect_to_db('import_data', ['people.csv'])
+        else:
+            print('Файла people.csv не существует')
 
     def butt_export_data_to_file():
         """
@@ -407,10 +411,13 @@ def create_interface():
         import csv
         f_name = 'people1.csv'
         data = connect_to_db('get_people', [])
-        data = list(map(lambda x: x[1:], data))
-        with open(f_name, "w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerows(data)
+        if data:
+            data = list(map(lambda x: x[1:], data))
+            with open(f_name, "w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows(data)
+        else:
+            print('У вас нет именинников, вы можете их добавить')
 
     background = '#599ede'
     window = tk.Tk()
