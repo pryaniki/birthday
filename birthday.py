@@ -248,8 +248,8 @@ def create_interface():
                     print('ведите целое число')
                 else:
                     data = connect_to_db('get_person_by_id', [ent_id.get()])
-                    if not data:
-                        print('Такого id нет в базе данных')
+                    if data is None or not data:
+                        return None
 
                     return data[0][1:]
 
@@ -273,83 +273,85 @@ def create_interface():
                 # ent_date.set_date()
                 ent_gender.set('')
                 ent_about_person.delete(0, tk.END)
+            data = fill_fields()
+            if data:
+                name, surname, patronymic, bd_date, gender, about_person = data
 
-            name, surname, patronymic, bd_date, gender, about_person = fill_fields()
+                background = '#d1d1d1'
+                size_fount = 12
+                win = tk.Toplevel(window)
+                win.config(bg='red')
+                win.title('Birthday')
+                win.resizable(False, False)
+                set_window_location(win, width_win=500, height_win=500)
 
-            background = '#d1d1d1'
-            size_fount = 12
-            win = tk.Toplevel(window)
-            win.config(bg='red')
-            win.title('Birthday')
-            win.resizable(False, False)
-            set_window_location(win, width_win=500, height_win=500)
+                frame_warp = tk.Frame(win, width=width_win, height=height_win, bg=background)
+                f_name = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
+                f_surname = tk.Frame(frame_warp, width=width_win, height=15, bg='white')
+                f_patronymic = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
+                f_date_gender = tk.Frame(frame_warp, width=width_win, height=15, bg='white')
+                f_date = tk.Frame(f_date_gender, width=width_win * (2 / 3), height=15, bg='yellow')
+                f_gender = tk.Frame(f_date_gender, width=width_win * (1 / 3), height=15, bg='red')
+                f_about_person = tk.Frame(frame_warp, width=width_win, height=100, bg='white')
+                f_butt_add = tk.Frame(frame_warp, width=width_win, height=40, bg='black')
 
-            frame_warp = tk.Frame(win, width=width_win, height=height_win, bg=background)
-            f_name = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
-            f_surname = tk.Frame(frame_warp, width=width_win, height=15, bg='white')
-            f_patronymic = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
-            f_date_gender = tk.Frame(frame_warp, width=width_win, height=15, bg='white')
-            f_date = tk.Frame(f_date_gender, width=width_win * (2 / 3), height=15, bg='yellow')
-            f_gender = tk.Frame(f_date_gender, width=width_win * (1 / 3), height=15, bg='red')
-            f_about_person = tk.Frame(frame_warp, width=width_win, height=100, bg='white')
-            f_butt_add = tk.Frame(frame_warp, width=width_win, height=40, bg='black')
+                l_name = tk.Label(f_name, bg=background, text='Name* ', font=('', size_fount))  # Имя
+                l_surname = tk.Label(f_surname, bg=background, text='Surname* ', font=('', size_fount))  # Фамилия
+                l_patronymic = tk.Label(f_patronymic, bg=background, text='Patronymic ', font=('', size_fount))  # Отчество
+                l_date = tk.Label(f_date, bg=background, text='Date of birth* ', font=('', size_fount))  # Дата рождения
+                l_gender = tk.Label(f_gender, bg=background, text='Gender* ', font=('', size_fount))  # Пол
+                l_about_person = tk.Label(f_about_person, height=5, bg=background, text='About a person ',
+                                          font=('', size_fount))  #
+                # О человеке
 
-            l_name = tk.Label(f_name, bg=background, text='Name* ', font=('', size_fount))  # Имя
-            l_surname = tk.Label(f_surname, bg=background, text='Surname* ', font=('', size_fount))  # Фамилия
-            l_patronymic = tk.Label(f_patronymic, bg=background, text='Patronymic ', font=('', size_fount))  # Отчество
-            l_date = tk.Label(f_date, bg=background, text='Date of birth* ', font=('', size_fount))  # Дата рождения
-            l_gender = tk.Label(f_gender, bg=background, text='Gender* ', font=('', size_fount))  # Пол
-            l_about_person = tk.Label(f_about_person, height=5, bg=background, text='About a person ',
-                                      font=('', size_fount))  #
-            # О человеке
+                ent_name = tk.Entry(f_name, textvariable=name, font=('', size_fount))
+                ent_surname = tk.Entry(f_surname, font=('', size_fount))
+                ent_patronymic = tk.Entry(f_patronymic, font=('', size_fount))
+                ent_date = DateEntry(f_date, width=10, background='darkblue', font=('', size_fount),
+                                     foreground='white', borderwidth=2, date=bd_date, date_pattern='dd-mm-yyyy')
+                gender_value = ['male', 'female']
+                ent_gender = ttk.Combobox(f_gender, state="readonly", values=gender_value, font=('', size_fount))
+                ent_about_person = tk.Entry(f_about_person, font=('', size_fount))
+                ent_name.insert(0, name)
+                ent_surname.insert(0, surname)
+                ent_patronymic.insert(0, patronymic)
+                ent_date.set_date(bd_date)
+                ent_gender.set(gender)
+                ent_about_person.insert(0, about_person)
 
-            ent_name = tk.Entry(f_name, textvariable=name, font=('', size_fount))
-            ent_surname = tk.Entry(f_surname, font=('', size_fount))
-            ent_patronymic = tk.Entry(f_patronymic, font=('', size_fount))
-            ent_date = DateEntry(f_date, width=10, background='darkblue', font=('', size_fount),
-                                 foreground='white', borderwidth=2, date=bd_date, date_pattern='dd-mm-yyyy')
-            gender_value = ['male', 'female']
-            ent_gender = ttk.Combobox(f_gender, state="readonly", values=gender_value, font=('', size_fount))
-            ent_about_person = tk.Entry(f_about_person, font=('', size_fount))
-            ent_name.insert(0, name)
-            ent_surname.insert(0, surname)
-            ent_patronymic.insert(0, patronymic)
-            ent_date.set_date(bd_date)
-            ent_gender.set(gender)
-            ent_about_person.insert(0, about_person)
+                button_сhange = tk.Button(f_butt_add, text='Change a birthday boy', font=('', size_fount),
+                                          command=change_people)  # Добавить именинника
+                button_clear = tk.Button(f_butt_add, text='Clear information', font=('', size_fount),
+                                         command=clear_frame)
 
-            button_сhange = tk.Button(f_butt_add, text='Change a birthday boy', font=('', size_fount),
-                                      command=change_people)  # Добавить именинника
-            button_clear = tk.Button(f_butt_add, text='Clear information', font=('', size_fount),
-                                     command=clear_frame)
+                frame_warp.pack()
+                f_name.pack(fill=tk.X, padx=10, pady=10)
+                f_surname.pack(fill=tk.X, padx=10, pady=10)
+                f_patronymic.pack(fill=tk.X, padx=10, pady=10)
+                f_date_gender.pack(fill=tk.X, padx=10, pady=10)
+                f_date.pack(fill=tk.X, side=tk.LEFT)
+                f_gender.pack(fill=tk.X, side=tk.LEFT)
+                f_about_person.pack(fill=tk.X, padx=10, pady=10)
+                f_butt_add.pack(fill=tk.X, padx=10, pady=10)
 
-            frame_warp.pack()
-            f_name.pack(fill=tk.X, padx=10, pady=10)
-            f_surname.pack(fill=tk.X, padx=10, pady=10)
-            f_patronymic.pack(fill=tk.X, padx=10, pady=10)
-            f_date_gender.pack(fill=tk.X, padx=10, pady=10)
-            f_date.pack(fill=tk.X, side=tk.LEFT)
-            f_gender.pack(fill=tk.X, side=tk.LEFT)
-            f_about_person.pack(fill=tk.X, padx=10, pady=10)
-            f_butt_add.pack(fill=tk.X, padx=10, pady=10)
+                l_name.pack(side='left')
+                l_surname.pack(side='left')
+                l_patronymic.pack(side='left')
+                l_date.pack(side='left')
+                l_gender.pack(side='left')
+                l_about_person.pack(side='left')
 
-            l_name.pack(side='left')
-            l_surname.pack(side='left')
-            l_patronymic.pack(side='left')
-            l_date.pack(side='left')
-            l_gender.pack(side='left')
-            l_about_person.pack(side='left')
+                ent_name.pack(fill=tk.X, padx=10, side='right', expand=True)
+                ent_surname.pack(fill=tk.X)
+                ent_patronymic.pack(fill=tk.X)
+                ent_date.pack(side='left')
+                ent_gender.pack(side='left')
+                ent_about_person.pack(fill=tk.X)
 
-            ent_name.pack(fill=tk.X, padx=10, side='right', expand=True)
-            ent_surname.pack(fill=tk.X)
-            ent_patronymic.pack(fill=tk.X)
-            ent_date.pack(side='left')
-            ent_gender.pack(side='left')
-            ent_about_person.pack(fill=tk.X)
-
-            button_сhange.pack()
-            button_clear.pack()
-
+                button_сhange.pack()
+                button_clear.pack()
+            else:
+                print('У вас нет именинников, вы можете их добавить')
         background = '#d1d1d1'
         size_fount = 12
         win = tk.Toplevel(window)
@@ -375,10 +377,11 @@ def create_interface():
         for header in heads:
             table.heading(header, text=header, anchor='center')
             table.column(header, anchor='center')
-
-        for row in all_people:
-            table.insert('', 'end', values=row)
-
+        if all_people:  # Заполнить таблицу
+            for row in all_people:
+                table.insert('', 'end', values=row)
+        else:
+            print('У вас нет именинников, вы можете их добавить')
         scroll_pane = ttk.Scrollbar(frame_main, command=table.yview)
         table.configure(yscrollcommand=scroll_pane.set)
         scroll_pane.pack(side='right', fill=tk.Y)
