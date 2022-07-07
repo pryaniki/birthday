@@ -1,5 +1,6 @@
 
-birthday - reminds you of your friends birthdays
+birthday - 
+
 
 
 # INSTALLATION
