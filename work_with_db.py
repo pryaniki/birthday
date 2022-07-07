@@ -325,7 +325,7 @@ def connect_to_db(command, data_for_request):
                 connection.close()
                 print("Соединение с PostgreSQL закрыто")
 
-    PGRE_EXE = f'PostgreSQLPortable{os.path.sep}PostgreSQLPortable.exe'
+    PGRE_EXE = f'PostgreSQLPortable/PostgreSQLPortable.exe'
 
     def resource_path(relative_path):
         if hasattr(sys, '_MEIPASS'):

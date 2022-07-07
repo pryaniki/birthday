@@ -280,20 +280,20 @@ def create_interface():
                 background = '#d1d1d1'
                 size_fount = 12
                 win = tk.Toplevel(window)
-                win.config(bg='red')
+                win.config(bg='#d1d1d1')
                 win.title('Birthday')
                 win.resizable(False, False)
                 set_window_location(win, width_win=500, height_win=500)
 
                 frame_warp = tk.Frame(win, width=width_win, height=height_win, bg=background)
-                f_name = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
+                f_name = tk.Frame(frame_warp, width=width_win, height=15, bg='#d1d1d1')
                 f_surname = tk.Frame(frame_warp, width=width_win, height=15, bg='white')
-                f_patronymic = tk.Frame(frame_warp, width=width_win, height=15, bg='black')
+                f_patronymic = tk.Frame(frame_warp, width=width_win, height=15, bg='#d1d1d1')
                 f_date_gender = tk.Frame(frame_warp, width=width_win, height=15, bg='white')
-                f_date = tk.Frame(f_date_gender, width=width_win * (2 / 3), height=15, bg='yellow')
-                f_gender = tk.Frame(f_date_gender, width=width_win * (1 / 3), height=15, bg='red')
+                f_date = tk.Frame(f_date_gender, width=width_win * (2 / 3), height=15, bg='#d1d1d1')
+                f_gender = tk.Frame(f_date_gender, width=width_win * (1 / 3), height=15, bg='#d1d1d1')
                 f_about_person = tk.Frame(frame_warp, width=width_win, height=100, bg='white')
-                f_butt_add = tk.Frame(frame_warp, width=width_win, height=40, bg='black')
+                f_butt_add = tk.Frame(frame_warp, width=width_win, height=40, bg='#d1d1d1')
 
                 l_name = tk.Label(f_name, bg=background, text='Name* ', font=('', size_fount))  # Имя
                 l_surname = tk.Label(f_surname, bg=background, text='Surname* ', font=('', size_fount))  # Фамилия
