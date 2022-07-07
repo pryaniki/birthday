@@ -15,11 +15,12 @@ Birthday - это программа, напоминающая вам о дня�
 ---
 При запуске программы вас встречает простое меню.
 
-![1.png](https://github.com/pryaniki/birthday/blob/master/data/image/Interface/1.png?raw=true)
-
+<p align="center">
+  <img src="https://github.com/pryaniki/birthday/blob/master/data/image/Interface/1.png?raw=true" alt="Здесь должно быть фото"/>
+</p>
 
 Пользователю предоставляется возможность выбора интервала, на котором он хочет узнать именинников.
-\
+
 Временные интервалы:
 * Tomorrow [сегодня, завтра];
 * For this week [сегодня, последний день недели];
@@ -28,8 +29,9 @@ Birthday - это программа, напоминающая вам о дня�
 
 При нажатии на кнопку “**Find out the birthday people**” откроется следующее окно:
 
-![2.png](https://github.com/pryaniki/birthday/blob/master/data/image/Interface/2.png?raw=true)
-
+<p align="center">
+  <img src="https://github.com/pryaniki/birthday/blob/master/data/image/Interface/2.png?raw=true" alt="Здесь должно быть фото"/>
+</p>
  
 В зависимости от выбранного интервала, в нем будут отображаться именинники.
 Так же при запуске windows, будет появляться это окно с выбранным интервалом в месяц.
@@ -37,18 +39,23 @@ Birthday - это программа, напоминающая вам о дня�
 
 При нажатии на кнопку “**Add a birthday person**” откроется следующее окно: 
 
-![3.png](https://github.com/pryaniki/birthday/blob/master/data/image/Interface/3.png?raw=true)
-
+<p align="center">
+  <img src="https://github.com/pryaniki/birthday/blob/master/data/image/Interface/3.png?raw=true" alt="Здесь должно быть фото"/>
+</p>
 
 Которое позволит добавить именинника в базу данных.
 
 При нажатии на кнопку “**See all birthday people**” откроется следующее окно:
 
-![4.png](https://github.com/pryaniki/birthday/blob/master/data/image/Interface/4.png?raw=true)
+<p align="center">
+  <img src="https://github.com/pryaniki/birthday/blob/master/data/image/Interface/4.png?raw=true" alt="Здесь должно быть фото"/>
+</p>
 
 При нажатии на кнопку “**Change a birthday boy**” откроется следующее окно:
 
-![5.png](https://github.com/pryaniki/birthday/blob/master/data/image/Interface/5.png?raw=true)
+<p align="center">
+  <img src="https://github.com/pryaniki/birthday/blob/master/data/image/Interface/5.png?raw=true" alt="Здесь должно быть фото"/>
+</p>
 
 Кнопка: ”**Exporting data to file people1.csv**” позволяет выгрузить информацию об именинниках в файл people1.csv, а 
 “**Import data from file people.csv**” загружает данные о пользователях из файла people.csv в базу данных.
